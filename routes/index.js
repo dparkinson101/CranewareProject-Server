@@ -168,7 +168,24 @@ router.get('/providerinfo', function(req, res, next) {
     });
 });
 
+router.get('/pricerange', function(req, res, next) {
 
+    var code = req.query.code;
+    var max = req.query.max;
+    var min = req.query.min;
+
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND averageTotalPaymetns BETWEEN '+min+' AND '+max+' LIMIT 10'), function(err, results) {
+
+        if (err) {
+            console.log(err);
+            res.status(500).json({ "status_code": 500, "status_message": "internal server error" + err });
+        } else {
+
+            res.send(results); //returns the results as JSON
+        }
+
+    });
+});
 
 
 module.exports = router;
