@@ -81,7 +81,7 @@ router.get('/silva', function(req, res, next) {
 
     var code = req.query.code;
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' LIMIT 1000'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -119,7 +119,7 @@ router.get('/filterzipcode', function(req, res, next) {
     var code = req.query.code
     var zipcode = req.query.zipcode
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerZipCode='+zipcode+' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerZipCode=' + zipcode + ' LIMIT 10'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -137,7 +137,7 @@ router.get('/filterstate', function(req, res, next) {
     var code = req.query.code;
     var state = req.query.state;
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerState='+state+' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerState=' + state + ' LIMIT 10'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -168,13 +168,14 @@ router.get('/providerinfo', function(req, res, next) {
     });
 });
 
+/*SORT*/
 router.get('/pricerange', function(req, res, next) {
 
     var code = req.query.code;
     var max = req.query.max;
     var min = req.query.min;
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND averageTotalPaymetns BETWEEN '+min+' AND '+max+' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND averageTotalPaymetns BETWEEN ' + min + ' AND ' + max + ' LIMIT 10'), function(err, results) {
 
         if (err) {
             console.log(err);
