@@ -15,12 +15,12 @@ router.get('/', function(req, res, next) {
 });
 
 
-/*GET request - return top 10 records, currently for testing purposes FOR AZURE SERVER CONNECTION*/
+/*GET request - return top 200 records, currently for testing purposes FOR AZURE SERVER CONNECTION*/
 router.get('/azure', function(req, res, next) {
 
     var code = req.query.code;
     var req = new sql.Request(connection);
-    req.query(('SELECT TOP 10 * FROM [DataSet] where substring(dRGDefinition, 1, 3)=' + code), function(err, results) {
+    req.query(('SELECT TOP 200 * FROM [DataSet] where substring(dRGDefinition, 1, 3)=' + code), function(err, results) {
 
         if (err) {
             res.status(500).json({ "status_code": 500, "status_message": "internal server error" + err });
@@ -81,7 +81,7 @@ router.get('/silva', function(req, res, next) {
 
     var code = req.query.code;
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' LIMIT 1000'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' LIMIT 20000'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -99,7 +99,7 @@ router.get('/sortpriceasc', function(req, res, next) {
 
     var code = req.query.code;
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' ORDER BY averageTotalPayments ASC LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' ORDER BY averageTotalPayments ASC LIMIT 200'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -119,7 +119,7 @@ router.get('/filterzipcode', function(req, res, next) {
     var code = req.query.code
     var zipcode = req.query.zipcode
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerZipCode=' + zipcode + ' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerZipCode=' + zipcode + ' LIMIT 200'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -137,7 +137,7 @@ router.get('/filterstate', function(req, res, next) {
     var code = req.query.code;
     var state = req.query.state;
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerState=' + state + ' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND providerState=' + state + ' LIMIT 200'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -155,7 +155,7 @@ router.get('/providerinfo', function(req, res, next) {
 
     var code = req.query.code;
 
-    connection.query(('SELECT providerId, providerName, providerStreetAddress, providerCity, providerState, providerZipCode, averageTotalPayments FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT alldata.dRGDefinition, alldata.providerId, alldata.providerName, alldata.providerStreetAddress, alldata.providerCity, alldata.providerState, alldata.providerZipCode, output2017.latitude, output2017.longitude from alldata inner join output2017 on alldata.providerId = output2017.providerId WHERE substr(alldata.dRGDefinition, 1, 3) =' + code + ' LIMIT 200'), function(err, results) {
 
         if (err) {
             console.log(err);
@@ -175,7 +175,7 @@ router.get('/pricerange', function(req, res, next) {
     var max = req.query.max;
     var min = req.query.min;
 
-    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND averageTotalPaymetns BETWEEN ' + min + ' AND ' + max + ' LIMIT 10'), function(err, results) {
+    connection.query(('SELECT * FROM alldata WHERE substring(dRGDefinition, 1, 3)=' + code + ' AND averageTotalPaymetns BETWEEN ' + min + ' AND ' + max + ' LIMIT 200'), function(err, results) {
 
         if (err) {
             console.log(err);
